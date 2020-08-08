@@ -70,6 +70,7 @@ void Limbic_system::doStep(float _reward,
 		float _visual_reward_Green,
 		float _visual_reward_Blue ) {
 
+	
 	reward = _reward;
 	placefieldGreen = _placefieldGreen;
 	placefieldBlue = _placefieldBlue;
@@ -81,6 +82,11 @@ void Limbic_system::doStep(float _reward,
 	visual_reward_Blue = _visual_reward_Blue;
 	//fprintf(stderr,"%f,%f\n",_visual_reward_Green,_visual_reward_Blue);
 
+	if (reward>0) {
+		fprintf(stderr,"--------------------> %f\n",reward);
+		//sleep(1);
+	}
+		
 	visual_direction_Green_trace = visual_direction_Green_mPFC_filter->filter(visual_direction_Green);
 	visual_direction_Blue_trace = visual_direction_Blue_mPFC_filter->filter(visual_direction_Blue);
 
@@ -149,15 +155,9 @@ void Limbic_system::doStep(float _reward,
 	mPFC_Green = visual_direction_Green_trace + visual_reward_Green + mPFC_Green_spont_act;
 	mPFC_Blue = visual_direction_Blue_trace + visual_reward_Blue + mPFC_Blue_spont_act;
 #else
-	mPFC_Green = ofc5HTreceptors(visual_direction_Green_trace + visual_reward_Green*2 + mPFC_Green_spont_act,1+DRN,2+DRN);
-	mPFC_Blue = ofc5HTreceptors(visual_direction_Blue_trace + visual_reward_Blue*2 + mPFC_Blue_spont_act,1+DRN,2+DRN);
+	mPFC_Green = ofc5HTreceptors(visual_direction_Green_trace*2 + visual_reward_Green + mPFC_Green_spont_act,1+DRN,2+DRN);
+	mPFC_Blue = ofc5HTreceptors(visual_direction_Blue_trace*2 + visual_reward_Blue + mPFC_Blue_spont_act,1+DRN,2+DRN);
 #endif
-
-	// the activity in the LH is literally that of the reward
-	LH = reward;
-
-	// the VTA gets its activity from the LH and is ihibited by the RMTg
-	VTA = (LH + VTA_baseline_activity) / (1+RMTg * shunting_inhibition_factor);
 
 	////////////////////////////////////////////////////////////////////
 	// OFC
@@ -166,27 +166,20 @@ void Limbic_system::doStep(float _reward,
 	// So the higher the weight the higher the OFC activity
 	// when the animal is inside that place field where there has been
 	// reward experienced in the past.
-	OFC = pfLg2OFC * placefieldGreen + pfDg2OFC * placefieldBlue;
-	if (((placefieldGreen-OFCprev) > 0.01)&&(OFCpersist==0)) OFCpersist = 200;
-	OFCprev = placefieldGreen;
-	if (LH > 0.5) {
-		OFCpersist = 0;
-	}
-	if (OFCpersist>0) OFCpersist--;
-	//fprintf(stderr,"%d\n",OFCpersist);
-	// weight change
-	weightChange(pfLg2OFC, learning_rate_OFC * DRN * placefieldGreen);
-	weightChange(pfDg2OFC, learning_rate_OFC * DRN * placefieldBlue);
+	// It codes reward value and the primary reward also has a
+	// value.
+	OFC = pfLg2OFC * placefieldGreen + pfDg2OFC * placefieldBlue + reward;
+        // weight change
+	weightChange(pfLg2OFC, learning_rate_OFC * DRN * placefieldGreen * OFC);
+	weightChange(pfDg2OFC, learning_rate_OFC * DRN * placefieldBlue * OFC);
 
-
-	// massive weight decay if there is no reward after a long period!
-//	if ((OFCpersist>0)&&(OFCpersist<100)) {
-//		fprintf(stderr,"--");
-//		pfLg2OFC = pfLg2OFC * 0.999;
-//	}
-
+	LH = OFC;
+	
 	// the dorsal raphe activity is driven by the OFC in a positive way
 	DRN = (LH + OFC * 4) / (1+RMTg * shunting_inhibition_factor + DRN_SUPPRESSION) + DRN_OFFSET;
+
+	// the VTA gets its activity from the LH and is ihibited by the RMTg
+	VTA = (LH + VTA_baseline_activity) / (1+RMTg * shunting_inhibition_factor);
 
 	//printf("%f\n",DRN);
 
