@@ -13,7 +13,7 @@
 #include "robot.h"
 #include "worldpoint.h"
 #include "defs.h"
-#include "patience-5ht.h"
+#include "reversal-5ht.h"
 
 
 /***********************************************
