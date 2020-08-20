@@ -24,6 +24,9 @@ Limbic_system::Limbic_system()
 	visual_direction_Green_mPFC_filter = new SecondOrderLowpassFilter(0.01);
 	visual_direction_Blue_mPFC_filter = new SecondOrderLowpassFilter(0.01);
 
+	// self inhibition VTA
+	VTA_forwardinhibition = new SecondOrderLowpassFilter(0.01);
+	
 	// input step number
 	step = 0;
 };
@@ -82,11 +85,6 @@ void Limbic_system::doStep(float _reward,
 	visual_reward_Blue = _visual_reward_Blue;
 	//fprintf(stderr,"%f,%f\n",_visual_reward_Green,_visual_reward_Blue);
 
-	if (reward>0) {
-		fprintf(stderr,"--------------------> %f\n",reward);
-		//sleep(1);
-	}
-		
 	visual_direction_Green_trace = visual_direction_Green_mPFC_filter->filter(visual_direction_Green);
 	visual_direction_Blue_trace = visual_direction_Blue_mPFC_filter->filter(visual_direction_Blue);
 
@@ -179,7 +177,7 @@ void Limbic_system::doStep(float _reward,
 	DRN = (LH + OFC * 4) / (1+RMTg * shunting_inhibition_factor + DRN_SUPPRESSION) + DRN_OFFSET;
 
 	// the VTA gets its activity from the LH and is ihibited by the RMTg
-	VTA = (LH + VTA_baseline_activity) / (1+RMTg * shunting_inhibition_factor);
+	VTA = (LH + VTA_baseline_activity) / (1+(RMTg + VTA_forwardinhibition->filter(OFC*0.1)) * shunting_inhibition_factor);
 
 	//printf("%f\n",DRN);
 
@@ -243,7 +241,7 @@ void Limbic_system::doStep(float _reward,
 
 
 void Limbic_system::logging() {
-	fprintf(flog,"%ld %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f\n",
+	fprintf(flog,"%ld %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f\n",
 		step, //0
 		reward, //1
 		placefieldGreen, //2
@@ -271,7 +269,8 @@ void Limbic_system::logging() {
 		pfDg2OFC, //24
 		DRN, //25
 		visual_reward_Green, // 26
-		visual_reward_Blue //27
+		visual_reward_Blue, //27
+		OFC // 28
 		);
 	fflush(flog);
 }

@@ -18,8 +18,8 @@ pl.ylim([0,1.2])
 pl.yticks([0,0.5,1])
 #
 pl.subplot(712);
-pl.plot(data[a:b,0],data[a:b,26]);
-pl.ylabel('vis2/green r');
+pl.plot(data[a:b,0],data[a:b,28]);
+pl.ylabel('OFC');
 pl.ylim([0,1.2])
 pl.yticks([0,0.5,1])
 #
@@ -42,16 +42,17 @@ pl.ylim([0,1.2])
 pl.yticks([0,0.5,1])
 #
 pl.subplot(716);
+pl.plot(data[a:b,0],data[a:b,11]);
+pl.ylabel('core w blue');
+pl.ylim([0,3])
+pl.yticks([0,1,2])
+#
+pl.subplot(717);
+pl.plot(data[a:b,0],data[a:b,1]*2);
 pl.plot(data[a:b,0],data[a:b,14]);
 pl.ylabel('VTA');
 pl.ylim([0,0.6])
 pl.yticks([0,0.25,0.5])
 #
-#
-pl.subplot(717);
-pl.plot(data[a:b,0],data[a:b,12]);
-pl.ylabel('core out green');
-pl.ylim([0,3])
-pl.yticks([0,1,2])
 #
 pl.show();

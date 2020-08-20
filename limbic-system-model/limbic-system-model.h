@@ -140,6 +140,9 @@ public:
 	// VTA
 	float VTA = 0;
 
+	// https://www.nature.com/articles/nrn2849
+	SecondOrderLowpassFilter* VTA_forwardinhibition;
+
 	/////////////////////////////////////////////////////////////////
 	// Lateral Hypotyalamus
 	float LH = 0;
