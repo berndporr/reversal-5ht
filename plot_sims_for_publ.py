@@ -8,7 +8,7 @@ data = np.loadtxt('log.dat');
 fig = pl.figure(1)
 #
 a = 0
-b = 7000 #len(data[:,0])
+b = len(data[:,0])
 # compound
 pl.subplot(711);
 pl.plot(data[a:b,0],data[a:b,6]);

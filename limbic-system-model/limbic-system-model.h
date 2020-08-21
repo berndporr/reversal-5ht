@@ -84,7 +84,7 @@ private:
 
 public:
 	// learning rate of the core
-	const float learning_rate_core = 0.01;
+	const float learning_rate_core = 0.05;
 
 	float core_DA = 0;
 	float core_plasticity = 0;
@@ -112,7 +112,7 @@ public:
 	// VTA parameters
 	float VTA_baseline_activity = 0.10;
 	// actual baseline for LTD/LTP
-	float VTA_zero_val = VTA_baseline_activity/1.99;
+	float VTA_zero_val = 0.05;
 
 	////////////////////////////////////////////////////////////////
 	// RMTg
@@ -166,9 +166,10 @@ public:
 	///////////////////////////////////////////////////////////////
 	// OFC
 	float OFC = 0;
+	float OFC2 = 0;
 
 	// learning rate for the OFC, just now from HC to OFC
-	const float learning_rate_OFC = 0.01;
+	const float learning_rate_OFC = 0.5;
 
 	// weights from the hippocampus place fields to the OFC
 	float pfLg2OFC = 0;
@@ -181,13 +182,20 @@ private:
 
 	// smoothes the signal when touching the object and
 	// creates a curiosity reaction
-	SecondOrderLowpassFilter* on_contact_direction_Green_filter;
-	SecondOrderLowpassFilter* on_contact_direction_Blue_filter;
+	SecondOrderLowpassFilter* on_contact_direction_Green_filter = NULL;
+	SecondOrderLowpassFilter* on_contact_direction_Blue_filter = NULL;
 
-	// copies of the input signals
+	// copies of the input signal
 	float reward = 0;
+	SecondOrderLowpassFilter* reward_filter = NULL;
+
+	// filtered version of the place fields
 	float placefieldGreen = 0;
 	float placefieldBlue = 0;
+
+	SecondOrderLowpassFilter* placefield_Green_filter = NULL;
+	SecondOrderLowpassFilter* placefield_Blue_filter = NULL;
+	
 	float on_contact_direction_Green = 0;
 	float on_contact_direction_Blue = 0;
 	float visual_direction_Green = 0;

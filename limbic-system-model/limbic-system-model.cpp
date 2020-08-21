@@ -1,7 +1,7 @@
 #include"limbic-system-model.h"
 
 #include <stdio.h>
-
+#include <iostream>
 #include <filter.h>
 
 float LHB_BIAS = 0;
@@ -26,6 +26,11 @@ Limbic_system::Limbic_system()
 
 	// self inhibition VTA
 	VTA_forwardinhibition = new SecondOrderLowpassFilter(0.01);
+
+	placefield_Green_filter = new SecondOrderLowpassFilter(0.1);
+	placefield_Blue_filter = new SecondOrderLowpassFilter(0.1);
+
+	reward_filter = new SecondOrderLowpassFilter(0.1);
 	
 	// input step number
 	step = 0;
@@ -74,9 +79,9 @@ void Limbic_system::doStep(float _reward,
 		float _visual_reward_Blue ) {
 
 	
-	reward = _reward;
-	placefieldGreen = _placefieldGreen;
-	placefieldBlue = _placefieldBlue;
+	reward = reward_filter->filter(_reward);
+	placefieldGreen = placefield_Green_filter->filter(_placefieldGreen);
+	placefieldBlue = placefield_Blue_filter->filter(_placefieldBlue);
 	on_contact_direction_Green = _on_contact_direction_Green;
 	on_contact_direction_Blue = _on_contact_direction_Blue;
 	visual_direction_Green = _visual_direction_Green;
@@ -167,12 +172,21 @@ void Limbic_system::doStep(float _reward,
 	// It codes reward value and the primary reward also has a
 	// value.
 	OFC = pfLg2OFC * placefieldGreen + pfDg2OFC * placefieldBlue + reward;
-        // weight change
-	weightChange(pfLg2OFC, learning_rate_OFC * DRN * placefieldGreen * OFC);
-	weightChange(pfDg2OFC, learning_rate_OFC * DRN * placefieldBlue * OFC);
+	float dOFC = OFC - OFC2;
+	if (dOFC < 0) dOFC = 0;
 
+        // weight change: LTP
+	weightChange(pfLg2OFC, learning_rate_OFC * DRN * placefieldGreen * dOFC);
+	weightChange(pfDg2OFC, learning_rate_OFC * DRN * placefieldBlue * dOFC);
+        // weight change: LTD
+	weightChange(pfLg2OFC, -learning_rate_OFC * DRN * OFC * 0.01);
+	weightChange(pfDg2OFC, -learning_rate_OFC * DRN * OFC * 0.01);
+	OFC2 = OFC;
+
+	// LH
 	LH = OFC;
-	
+
+	// DRN
 	// the dorsal raphe activity is driven by the OFC in a positive way
 	DRN = (LH + OFC * 4) / (1+RMTg * shunting_inhibition_factor + DRN_SUPPRESSION) + DRN_OFFSET;
 
