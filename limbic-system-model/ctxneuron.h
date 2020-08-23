@@ -1,6 +1,8 @@
 #ifndef _CTXNEURON
 #define _CTXNEURON
 
+#include <math.h>
+
 class CtxNeuron {
 
 public:
@@ -31,6 +33,15 @@ private:
 		if (w>1) w = 1;
 		if (w<0) w = 0;
 	}
+
+	float ofc5HTreceptors(float x, float htR1, float htR2) {
+		htR1 = 1 + htR1;
+		htR2 = 1 + htR2;
+		float r = (1-exp(-pow(x/htR1,htR1)))*htR2;
+		if (r < 0.00001) return 0;
+		return r;
+	}
+
 };
 
 #endif
