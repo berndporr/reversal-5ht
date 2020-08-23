@@ -93,6 +93,39 @@ void Limbic_system::doStep(float _reward,
 	visual_direction_Green_trace = visual_direction_Green_mPFC_filter->filter(visual_direction_Green);
 	visual_direction_Blue_trace = visual_direction_Blue_mPFC_filter->filter(visual_direction_Blue);
 
+	////////////////////////////////////////////////////////////////////
+	// OFC
+	// lace field -> Orbitofrontal Cortex weight.
+	// The OFC remembers the reward value of a place.
+	// So the higher the weight the higher the OFC activity
+	// when the animal is inside that place field where there has been
+	// reward experienced in the past.
+	// It codes reward value and the primary reward also has a
+	// value.
+	OFC = pfLg2OFC * placefieldGreen + pfDg2OFC * placefieldBlue + reward;
+	float dOFC = OFC - OFC2;
+	if (dOFC < 0) dOFC = 0;
+
+        // weight change: LTP
+	weightChange(pfLg2OFC, learning_rate_OFC * DRN * placefieldGreen * dOFC);
+	weightChange(pfDg2OFC, learning_rate_OFC * DRN * placefieldBlue * dOFC);
+        // weight change: LTD
+	weightChange(pfLg2OFC, -learning_rate_OFC * DRN * OFC * 0.01);
+	weightChange(pfDg2OFC, -learning_rate_OFC * DRN * OFC * 0.01);
+	OFC2 = OFC;
+
+	// LH
+	LH = OFC;
+
+	// DRN
+	// the dorsal raphe activity is driven by the OFC in a positive way
+	DRN = (LH + OFC * 4) / (1+RMTg * shunting_inhibition_factor + DRN_SUPPRESSION) + DRN_OFFSET;
+
+	// the VTA gets its activity from the LH and is ihibited by the RMTg
+	VTA = (LH + VTA_baseline_activity) / (1+(RMTg + VTA_forwardinhibition->filter(OFC*0.1)) * shunting_inhibition_factor);
+
+	//printf("%f\n",DRN);
+
 	double mPFC_Green_spont_act = 0;
 	double mPFC_Blue_spont_act = 0;
 	double mPFC_spont_act_value = 0.2;
@@ -153,49 +186,12 @@ void Limbic_system::doStep(float _reward,
 		break;
 	}
 
-//#define HT5DEBUG
-#ifdef HT5DEBUG
-	mPFC_Green = visual_direction_Green_trace + visual_reward_Green + mPFC_Green_spont_act;
-	mPFC_Blue = visual_direction_Blue_trace + visual_reward_Blue + mPFC_Blue_spont_act;
-#else
 	mPFC_Green = ofc5HTreceptors(visual_direction_Green_trace*2 + visual_reward_Green + mPFC_Green_spont_act,1+DRN,2+DRN);
 	mPFC_Blue = ofc5HTreceptors(visual_direction_Blue_trace*2 + visual_reward_Blue + mPFC_Blue_spont_act,1+DRN,2+DRN);
-#endif
 
-	////////////////////////////////////////////////////////////////////
-	// OFC
-	// lace field -> Orbitofrontal Cortex weight.
-	// The OFC remembers the reward value of a place.
-	// So the higher the weight the higher the OFC activity
-	// when the animal is inside that place field where there has been
-	// reward experienced in the past.
-	// It codes reward value and the primary reward also has a
-	// value.
-	OFC = pfLg2OFC * placefieldGreen + pfDg2OFC * placefieldBlue + reward;
-	float dOFC = OFC - OFC2;
-	if (dOFC < 0) dOFC = 0;
 
-        // weight change: LTP
-	weightChange(pfLg2OFC, learning_rate_OFC * DRN * placefieldGreen * dOFC);
-	weightChange(pfDg2OFC, learning_rate_OFC * DRN * placefieldBlue * dOFC);
-        // weight change: LTD
-	weightChange(pfLg2OFC, -learning_rate_OFC * DRN * OFC * 0.01);
-	weightChange(pfDg2OFC, -learning_rate_OFC * DRN * OFC * 0.01);
-	OFC2 = OFC;
 
-	// LH
-	LH = OFC;
-
-	// DRN
-	// the dorsal raphe activity is driven by the OFC in a positive way
-	DRN = (LH + OFC * 4) / (1+RMTg * shunting_inhibition_factor + DRN_SUPPRESSION) + DRN_OFFSET;
-
-	// the VTA gets its activity from the LH and is ihibited by the RMTg
-	VTA = (LH + VTA_baseline_activity) / (1+(RMTg + VTA_forwardinhibition->filter(OFC*0.1)) * shunting_inhibition_factor);
-
-	//printf("%f\n",DRN);
-
-	////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////
 	// lateral shell activity
 	// the place field feeds into the Nacc shell for the time being.
 	lShell = placefieldGreen * lShell_weight_pflg + placefieldBlue * lShell_weight_pfdg;
