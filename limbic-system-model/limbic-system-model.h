@@ -5,6 +5,8 @@
 
 #include <filter.h>
 
+#include "limbic-system-model/ctxneuron.h"
+
 extern float LHB_BIAS;
 extern float DRN_SUPPRESSION;
 extern float OFC_5HTR1_OFFSET;
@@ -165,6 +167,7 @@ public:
 
 	///////////////////////////////////////////////////////////////
 	// OFC
+	CtxNeuron* OFCNeuron;
 	float OFC = 0;
 	float OFC2 = 0;
 

@@ -31,6 +31,10 @@ Limbic_system::Limbic_system()
 	placefield_Blue_filter = new SecondOrderLowpassFilter(0.1);
 
 	reward_filter = new SecondOrderLowpassFilter(0.1);
+
+	OFCNeuron = new CtxNeuron(learning_rate_OFC);
+	OFCNeuron->addInput(placefieldGreen);
+	OFCNeuron->addInput(placefieldBlue);
 	
 	// input step number
 	step = 0;
@@ -102,17 +106,7 @@ void Limbic_system::doStep(float _reward,
 	// reward experienced in the past.
 	// It codes reward value and the primary reward also has a
 	// value.
-	OFC = pfLg2OFC * placefieldGreen + pfDg2OFC * placefieldBlue + reward;
-	float dOFC = OFC - OFC2;
-	if (dOFC < 0) dOFC = 0;
-
-        // weight change: LTP
-	weightChange(pfLg2OFC, learning_rate_OFC * DRN * placefieldGreen * dOFC);
-	weightChange(pfDg2OFC, learning_rate_OFC * DRN * placefieldBlue * dOFC);
-        // weight change: LTD
-	weightChange(pfLg2OFC, -learning_rate_OFC * DRN * OFC * 0.01);
-	weightChange(pfDg2OFC, -learning_rate_OFC * DRN * OFC * 0.01);
-	OFC2 = OFC;
+	OFC = OFCNeuron->doStep(reward, DRN);
 
 	// LH
 	LH = OFC;

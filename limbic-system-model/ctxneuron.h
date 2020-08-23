@@ -8,7 +8,8 @@ public:
 		learningRate = _learningRate;
 	}
 	
-	void addInput(float& anInput, float initWeight) {
+	void addInput(float& anInput, float initWeight = 0) {
+		if (nInputs == maxInputs) throw "No more inputs.";
 		inputs[nInputs] = &anInput;
 		weights[nInputs] = initWeight;
 		nInputs++;
@@ -19,8 +20,9 @@ public:
 private:
 	float output;
 	float output2;
-	float* inputs[10];
-	float weights[10];
+	static const int maxInputs = 10;
+	float* inputs[maxInputs];
+	float weights[maxInputs];
 	int nInputs = 0;
 	float learningRate = 0;
 	
