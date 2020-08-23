@@ -2,14 +2,13 @@
 #define _CTXNEURON
 
 #include <math.h>
+#include "filter.h"
 
 class CtxNeuron {
 
 public:
-	CtxNeuron(float _learningRate) {
-		learningRate = _learningRate;
-	}
-	
+	CtxNeuron(float _learningRate);
+		
 	void addInput(float& anInput, float initWeight = 0) {
 		if (nInputs == maxInputs) throw "No more inputs.";
 		inputs[nInputs] = &anInput;
@@ -26,7 +25,8 @@ private:
 	float* inputs[maxInputs];
 	float weights[maxInputs];
 	int nInputs = 0;
-	float learningRate = 0;
+	float learningRate;
+	SecondOrderLowpassFilter* slowCaDetector;
 	
 	void weightChange(float &w, float delta) {
 		w += delta;

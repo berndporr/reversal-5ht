@@ -20,7 +20,7 @@ pl.yticks([0,0.5,1])
 pl.subplot(712);
 pl.plot(data[a:b,0],data[a:b,28]);
 pl.ylabel('OFC');
-pl.ylim([0,1.2])
+pl.ylim([0,1])
 pl.yticks([0,0.5,1])
 #
 pl.subplot(713);

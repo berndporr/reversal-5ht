@@ -35,6 +35,8 @@ Limbic_system::Limbic_system()
 	OFCNeuron = new CtxNeuron(learning_rate_OFC);
 	OFCNeuron->addInput(placefieldGreen);
 	OFCNeuron->addInput(placefieldBlue);
+	OFCNeuron->addInput(visual_direction_Green);
+	OFCNeuron->addInput(visual_direction_Blue);
 	
 	// input step number
 	step = 0;
