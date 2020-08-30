@@ -861,8 +861,8 @@ void Robot::react(int step,int collision) {
 
 	// The switches for the direction controller to the dark or light green place fields.
 	//the ditection triggers by the corelg and coredg
-	Greensw=limbic_system->getGreenOutput();
-	Bluesw=limbic_system->getBlueOutput();
+	Greensw=limbic_system->getGreenOutput() * 2;
+	Bluesw=limbic_system->getBlueOutput() * 2;
 	float exploreLeft=limbic_system->getExploreLeft();
 	float exploreRight=limbic_system->getExploreRight();
 

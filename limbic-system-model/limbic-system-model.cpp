@@ -41,12 +41,12 @@ Limbic_system::Limbic_system()
 	OFCNeuron->addInput(visual_direction_Blue_trace);
 
 	const float w = 1;
-	mPFCneuronGreen = new CtxNeuron(); // learning_rate_mPFC,learning_rate_mPFC*0.01);
-	mPFCneuronGreen->addInput(visual_direction_Green_trace,w);
+	mPFCneuronGreen = new CtxNeuron(learning_rate_mPFC,learning_rate_mPFC*0.01);
+	mPFCneuronGreen->addInput(visual_direction_Green_trace,w*0.25);
 	mPFCneuronGreen->addInput(visual_reward_Green,w);
 	
-	mPFCneuronBlue = new CtxNeuron(); // learning_rate_mPFC,learning_rate_mPFC*0.01);
-	mPFCneuronGreen->addInput(visual_direction_Blue_trace,w);
+	mPFCneuronBlue = new CtxNeuron(learning_rate_mPFC,learning_rate_mPFC*0.01);
+	mPFCneuronGreen->addInput(visual_direction_Blue_trace,w*0.25);
         mPFCneuronGreen->addInput(visual_reward_Blue,w);	
 		
 	// input step number
@@ -103,8 +103,8 @@ void Limbic_system::doStep(float _reward,
 	on_contact_direction_Blue = _on_contact_direction_Blue;
 	visual_direction_Green = _visual_direction_Green;
 	visual_direction_Blue = _visual_direction_Blue;
-	visual_reward_Green = _visual_reward_Green * 10;
-	visual_reward_Blue = _visual_reward_Blue * 10;
+	visual_reward_Green = _visual_reward_Green;
+	visual_reward_Blue = _visual_reward_Blue;
 	//fprintf(stderr,"%f,%f\n",_visual_reward_Green,_visual_reward_Blue);
 
 	visual_direction_Green_trace = visual_direction_Green_mPFC_filter->filter(visual_direction_Green);
@@ -169,8 +169,8 @@ void Limbic_system::doStep(float _reward,
 		break;
 	}
 
-	mPFC_Green = mPFCneuronGreen->doStep(OFC*10, serotoninConcentration);
-	mPFC_Blue = mPFCneuronBlue->doStep(OFC*10, serotoninConcentration);
+	mPFC_Green = mPFCneuronGreen->doStep(OFC * 2, serotoninConcentration);
+	mPFC_Blue = mPFCneuronBlue->doStep(OFC * 2, serotoninConcentration);
 
 	// printf("%f %f\n",visual_reward_Green,mPFC_Green);
 
