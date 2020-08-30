@@ -1,9 +1,11 @@
 #include "ctxneuron.h"
 
 
-CtxNeuron::CtxNeuron(float _learningRate) : 
-	learningRate(_learningRate),
-	slowCaDetector(new SecondOrderLowpassFilter(0.01))
+CtxNeuron::CtxNeuron(float _learningRateLTP, float _learningRateLTD, float _tLTD) : 
+	learningRateLTP(_learningRateLTP),
+	learningRateLTD(_learningRateLTD),
+	tLTD(_tLTD),
+	slowCaDetector(new SecondOrderLowpassFilter(_tLTD))
 {
 }
 	
@@ -14,7 +16,6 @@ float CtxNeuron::doStep(float nonPlasticInput, float serot) {
 	for(int i=0;i<nInputs;i++) {
 		output += weights[i] * *(inputs[i]);
 	}
-	// output = output / (float)nInputs * 2;
 	if (output < 0) output = 0;
 	if (output > 1) output = 1;
 	if (serot < 0) serot = 0;
@@ -28,9 +29,9 @@ float CtxNeuron::doStep(float nonPlasticInput, float serot) {
 
 	for(int i=0;i<nInputs;i++) {
 		// weight change: LTP
-		weightChange(weights[i], learningRate * serot * *(inputs[i]) * dOutput);
+		weightChange(weights[i], learningRateLTP * serot * *(inputs[i]) * dOutput);
 		// weight change: LTD
-		weightChange(weights[i], - 0.02 * learningRate * slowCa * serot);
+		weightChange(weights[i], - tLTD * learningRateLTD * slowCa);
 	}
 
 	output2 = output;

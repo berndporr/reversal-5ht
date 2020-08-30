@@ -86,7 +86,7 @@ private:
 
 public:
 	// learning rate of the core
-	const float learning_rate_core = 0.05;
+	const float learning_rate_core = 0.1;
 
 	float core_DA = 0;
 	float core_plasticity = 0;
@@ -122,6 +122,8 @@ public:
 
 	///////////////////////////////////////////////////////////////
 	// mPFC
+	const float learning_rate_mPFC = 0.1;
+	
 	SecondOrderLowpassFilter* visual_direction_Green_mPFC_filter;
 	SecondOrderLowpassFilter* visual_direction_Blue_mPFC_filter;
 
@@ -130,6 +132,9 @@ public:
 	
 	float mPFC_Green = 0;
 	float mPFC_Blue = 0;
+
+	CtxNeuron* mPFCneuronGreen = NULL;
+	CtxNeuron* mPFCneuronBlue = NULL;
 	
 	float mPFC_receptor_5HT1 = 0;
 	float mPFC_receptor_5HT2 = 0;
@@ -169,14 +174,17 @@ public:
 	// OFC
 	CtxNeuron* OFCNeuron;
 	float OFC = 0;
-	float OFC2 = 0;
 
 	// learning rate for the OFC, just now from HC to OFC
-	const float learning_rate_OFC = 0.2;
+	const float learning_rate_OFC = 0.5;
 
 	// weights from the hippocampus place fields to the OFC
 	float pfLg2OFC = 0;
 	float pfDg2OFC = 0;
+
+	SecondOrderLowpassFilter* DRNto5HTrelease;
+
+	float serotoninConcentration = 0;
 
 private:
 	// changes the weight w by the amount delta

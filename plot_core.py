@@ -10,35 +10,42 @@ fig = pl.figure(1)
 a = 0
 b = len(data[:,0])
 # compound
-pl.subplot(711);
+pl.subplot(911);
+pl.plot(data[a:b,0],data[a:b,26]);
+pl.plot(data[a:b,0],data[a:b,6]);
+pl.ylabel('visR*2/PF');
+#
+pl.subplot(912);
+pl.plot(data[a:b,0],data[a:b,30]);
+pl.ylabel('w OFC');
+#
+pl.subplot(913);
 pl.plot(data[a:b,0],data[a:b,9]);
-pl.ylabel('mPFC_LG');
+pl.ylabel('mPFC G');
 #
-pl.subplot(712);
+pl.subplot(914);
 pl.plot(data[a:b,0],data[a:b,8]);
-pl.ylabel('core w lg2lg');
+pl.ylabel('core w G');
 #
-pl.subplot(713);
-pl.plot(data[a:b,0],data[a:b,10]);
-pl.ylabel('mPFC_DG');
+pl.subplot(915);
+pl.plot(data[a:b,0],data[a:b,12]);
+pl.ylabel('core G out');
 #
-pl.subplot(714);
-pl.plot(data[a:b,0],data[a:b,11]);
-pl.ylabel('core w dg2dg');
-#
-pl.subplot(715);
+pl.subplot(916);
 pl.plot(data[a:b,0],data[a:b,14]);
 pl.ylabel('VTA');
 #
-pl.subplot(716);
+pl.subplot(917);
+pl.plot(data[a:b,0],data[a:b,28]);
+pl.ylabel('OFC');
+#
+pl.subplot(918);
 pl.plot(data[a:b,0],data[a:b,25]);
 pl.ylabel('DRN');
 #
-pl.subplot(717);
-pl.plot(data[a:b,0],data[a:b,26]);
-pl.plot(data[a:b,0],data[a:b,27]);
-pl.plot(data[a:b,0],data[a:b,2]*2);
-pl.plot(data[a:b,0],data[a:b,3]*2);
-pl.ylabel('visR*2/PF');
+pl.subplot(919);
+pl.plot(data[a:b,0],data[a:b,29]);
+pl.ylabel('5HT');
+#
 #
 pl.show();

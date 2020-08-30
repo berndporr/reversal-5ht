@@ -7,7 +7,7 @@
 class CtxNeuron {
 
 public:
-	CtxNeuron(float _learningRate);
+	CtxNeuron(float _learningRateLTP = 0.0, float _learningRateLTD = 0.0, float tLTD = 0.01);
 		
 	void addInput(float& anInput, float initWeight = 0) {
 		if (nInputs == maxInputs) throw "No more inputs.";
@@ -18,6 +18,10 @@ public:
 
 	float doStep(float nonPlasticInput, float serot);
 
+	float getWeight(int i) {
+		return weights[i];
+	}
+
 private:
 	float output;
 	float output2;
@@ -25,7 +29,9 @@ private:
 	float* inputs[maxInputs];
 	float weights[maxInputs];
 	int nInputs = 0;
-	float learningRate;
+	float learningRateLTP;
+	float learningRateLTD;
+	float tLTD;
 	SecondOrderLowpassFilter* slowCaDetector;
 	
 	void weightChange(float &w, float delta) {
@@ -36,7 +42,7 @@ private:
 
 	float ofc5HTreceptors(float x, float htR1, float htR2) {
 		htR1 = 1 + htR1;
-		htR2 = 1 + htR2;
+		htR2 = 2 + htR2;
 		float r = (1-exp(-pow(x/htR1,htR1)))*htR2;
 		if (r < 0.00001) return 0;
 		return r;

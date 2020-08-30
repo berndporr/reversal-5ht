@@ -32,12 +32,23 @@ Limbic_system::Limbic_system()
 
 	reward_filter = new SecondOrderLowpassFilter(0.1);
 
-	OFCNeuron = new CtxNeuron(learning_rate_OFC);
-	OFCNeuron->addInput(placefieldGreen);
-	OFCNeuron->addInput(placefieldBlue);
-	OFCNeuron->addInput(visual_direction_Green);
-	OFCNeuron->addInput(visual_direction_Blue);
+	DRNto5HTrelease = new SecondOrderLowpassFilter(0.001);
+
+	OFCNeuron = new CtxNeuron(learning_rate_OFC,learning_rate_OFC * 0.5);
+	// OFCNeuron->addInput(placefieldGreen);
+	// OFCNeuron->addInput(placefieldBlue);
+	OFCNeuron->addInput(visual_direction_Green_trace);
+	OFCNeuron->addInput(visual_direction_Blue_trace);
+
+	const float w = 1;
+	mPFCneuronGreen = new CtxNeuron(); // learning_rate_mPFC,learning_rate_mPFC*0.01);
+	mPFCneuronGreen->addInput(visual_direction_Green_trace,w);
+	mPFCneuronGreen->addInput(visual_reward_Green,w);
 	
+	mPFCneuronBlue = new CtxNeuron(); // learning_rate_mPFC,learning_rate_mPFC*0.01);
+	mPFCneuronGreen->addInput(visual_direction_Blue_trace,w);
+        mPFCneuronGreen->addInput(visual_reward_Blue,w);	
+		
 	// input step number
 	step = 0;
 };
@@ -92,8 +103,8 @@ void Limbic_system::doStep(float _reward,
 	on_contact_direction_Blue = _on_contact_direction_Blue;
 	visual_direction_Green = _visual_direction_Green;
 	visual_direction_Blue = _visual_direction_Blue;
-	visual_reward_Green = _visual_reward_Green;
-	visual_reward_Blue = _visual_reward_Blue;
+	visual_reward_Green = _visual_reward_Green * 10;
+	visual_reward_Blue = _visual_reward_Blue * 10;
 	//fprintf(stderr,"%f,%f\n",_visual_reward_Green,_visual_reward_Blue);
 
 	visual_direction_Green_trace = visual_direction_Green_mPFC_filter->filter(visual_direction_Green);
@@ -117,34 +128,10 @@ void Limbic_system::doStep(float _reward,
 	// the dorsal raphe activity is driven by the OFC in a positive way
 	DRN = (LH + OFC * 4) / (1+RMTg * shunting_inhibition_factor + DRN_SUPPRESSION) + DRN_OFFSET;
 
+	serotoninConcentration = DRNto5HTrelease->filter(DRN);
+
 	// the VTA gets its activity from the LH and is ihibited by the RMTg
 	VTA = (LH + VTA_baseline_activity) / (1+(RMTg + VTA_forwardinhibition->filter(OFC*0.1)) * shunting_inhibition_factor);
-
-	//printf("%f\n",DRN);
-
-	double mPFC_Green_spont_act = 0;
-	double mPFC_Blue_spont_act = 0;
-	double mPFC_spont_act_value = 0.2;
-
-	if (mPFCspontGreen>0) {
-		mPFCspontGreen--;
-		mPFC_Green_spont_act = mPFC_spont_act_value;
-	} else {
-		mPFC_Green_spont_act = 0;
-		if (random() < (RAND_MAX/1000)) {
-			mPFCspontGreen = 500;
-		}
-	}
-
-	if (mPFCspontBlue>0) {
-		mPFCspontBlue--;
-		mPFC_Blue_spont_act = mPFC_spont_act_value;
-	} else {
-		mPFC_Blue_spont_act = 0;
-		if (random() < (RAND_MAX/1000)) {
-			mPFCspontBlue = 500;
-		}
-	}
 
 	// this is also generated in the mPFC and then fed down to the NAcc core with the command
 	// to explore
@@ -182,10 +169,10 @@ void Limbic_system::doStep(float _reward,
 		break;
 	}
 
-	mPFC_Green = ofc5HTreceptors(visual_direction_Green_trace*2 + visual_reward_Green + mPFC_Green_spont_act,1+DRN,2+DRN);
-	mPFC_Blue = ofc5HTreceptors(visual_direction_Blue_trace*2 + visual_reward_Blue + mPFC_Blue_spont_act,1+DRN,2+DRN);
+	mPFC_Green = mPFCneuronGreen->doStep(OFC*10, serotoninConcentration);
+	mPFC_Blue = mPFCneuronBlue->doStep(OFC*10, serotoninConcentration);
 
-
+	// printf("%f %f\n",visual_reward_Green,mPFC_Green);
 
         ////////////////////////////////////////////////////
 	// lateral shell activity
@@ -220,7 +207,9 @@ void Limbic_system::doStep(float _reward,
 	// of the Blue is high then the rat approaches the Blue marker
 	CoreBlueOut= (mPFC_Blue * core_weight_dg2dg);
 
-	float core_threshold = 0.25;
+	// fprintf(stderr,"%f %f\n",CoreGreenOut,CoreBlueOut);
+
+	float core_threshold = 0; //0.25;
 	if (CoreGreenOut < core_threshold) CoreGreenOut = 0;
 	if (CoreBlueOut < core_threshold) CoreBlueOut = 0;
 
@@ -247,7 +236,7 @@ void Limbic_system::doStep(float _reward,
 
 
 void Limbic_system::logging() {
-	fprintf(flog,"%ld %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f\n",
+	fprintf(flog,"%ld %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f\n",
 		step, //0
 		reward, //1
 		placefieldGreen, //2
@@ -276,7 +265,9 @@ void Limbic_system::logging() {
 		DRN, //25
 		visual_reward_Green, // 26
 		visual_reward_Blue, //27
-		OFC // 28
+		OFC, // 28
+		serotoninConcentration, // 29
+		OFCNeuron->getWeight(0) // 30
 		);
 	fflush(flog);
 }
