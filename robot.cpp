@@ -870,7 +870,7 @@ void Robot::react(int step,int collision) {
 		Greensw=1;
 	}
 	if (Bluesw > 1) {
-		Bluesw=0;
+		Bluesw=1;
 	}
 
 	Greendirection->doDirection(leftGreen,rightGreen,Greensw);

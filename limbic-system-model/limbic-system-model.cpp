@@ -220,7 +220,7 @@ void Limbic_system::doStep(float _reward,
 	weightChange(core_weight_dg2dg, learning_rate_core * core_plasticity * mPFC_Blue);
 
 	// we assume that the Core performs lateral inhibtion to shut down exploration
-	if ((CoreGreenOut > 0.05)&&(CoreBlueOut > 0.05)) {
+	if ((CoreGreenOut > 0.05)||(CoreBlueOut > 0.05)) {
 		mPFC2CoreExploreLeft = 0; // (float)random()/(float)RAND_MAX;
 		mPFC2CoreExploreRight = 0; //(float)random()/(float)RAND_MAX;
 		//printf("dir! mPFC_Green = %f\n",visual_direction_Green);
