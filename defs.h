@@ -218,7 +218,7 @@
 // Reversal learning
 
 // defines how many successful contacts we need before reversal learning
-#define THRES_FOOD_CONTACTS 3
+#define THRES_FOOD_CONTACTS 5
 
 #endif
 

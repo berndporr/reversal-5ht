@@ -114,7 +114,7 @@ public:
 	// VTA parameters
 	float VTA_baseline_activity = 0.10;
 	// actual baseline for LTD/LTP
-	float VTA_zero_val = 0.051;
+	float VTA_zero_val = 0.0505;
 
 	////////////////////////////////////////////////////////////////
 	// RMTg
