@@ -43,11 +43,10 @@ Limbic_system::Limbic_system()
 	const float w = 1;
 	mPFCneuronGreen = new CtxNeuron(learning_rate_mPFC,learning_rate_mPFC*0.01);
 	mPFCneuronGreen->addInput(visual_direction_Green_trace,w*0.25);
-	mPFCneuronGreen->addInput(visual_reward_Green,w);
 	
 	mPFCneuronBlue = new CtxNeuron(learning_rate_mPFC,learning_rate_mPFC*0.01);
-	mPFCneuronGreen->addInput(visual_direction_Blue_trace,w*0.25);
-        mPFCneuronGreen->addInput(visual_reward_Blue,w);	
+	mPFCneuronBlue->addInput(visual_direction_Blue_trace,w*0.25);
+        mPFCneuronBlue->addInput(visual_reward_Blue,w);	
 		
 	// input step number
 	step = 0;
@@ -119,8 +118,11 @@ void Limbic_system::doStep(float _reward,
 	// reward experienced in the past.
 	// It codes reward value and the primary reward also has a
 	// value.
-	OFC = OFCNeuron->doStep(reward, DRN);
-
+	OFC = OFCNeuron->doStep(reward, DRN * 2);
+	if (OFC > 0.25) {
+		OFC = 0.25;
+	}
+	
 	// LH
 	LH = OFC;
 
@@ -169,8 +171,8 @@ void Limbic_system::doStep(float _reward,
 		break;
 	}
 
-	mPFC_Green = mPFCneuronGreen->doStep(OFC * 2, serotoninConcentration);
-	mPFC_Blue = mPFCneuronBlue->doStep(OFC * 2, serotoninConcentration);
+	mPFC_Green = mPFCneuronGreen->doStep(visual_reward_Green + OFC, serotoninConcentration);
+	mPFC_Blue = mPFCneuronBlue->doStep(visual_reward_Blue + OFC, serotoninConcentration);
 
 	// printf("%f %f\n",visual_reward_Green,mPFC_Green);
 
@@ -209,9 +211,13 @@ void Limbic_system::doStep(float _reward,
 
 	// fprintf(stderr,"%f %f\n",CoreGreenOut,CoreBlueOut);
 
-	float core_threshold = 0; //0.25;
+	float core_threshold = 0.01;
 	if (CoreGreenOut < core_threshold) CoreGreenOut = 0;
 	if (CoreBlueOut < core_threshold) CoreBlueOut = 0;
+
+	if (CoreGreenOut > 1) CoreGreenOut = 1;
+	if (CoreBlueOut > 1) CoreBlueOut = 1;
+
 
 	// plasticity
 	core_DA = VTA;
@@ -236,15 +242,15 @@ void Limbic_system::doStep(float _reward,
 
 
 void Limbic_system::logging() {
-	fprintf(flog,"%ld %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f\n",
+	fprintf(flog,"%ld %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f\n",
 		step, //0
 		reward, //1
 		placefieldGreen, //2
 		placefieldBlue, //3
 		on_contact_direction_Green, //4
 		on_contact_direction_Blue, //5
-		visual_direction_Green, //6
-		visual_direction_Blue, //7
+		visual_direction_Green_trace, //6
+		visual_direction_Blue_trace, //7
 		core_weight_lg2lg, //8
 		mPFC_Green, //9
 		mPFC_Blue, //10
@@ -267,7 +273,9 @@ void Limbic_system::logging() {
 		visual_reward_Blue, //27
 		OFC, // 28
 		serotoninConcentration, // 29
-		OFCNeuron->getWeight(0) // 30
+		OFCNeuron->getWeight(0), // 30
+		mPFCneuronGreen->getWeight(0), // 31
+		mPFCneuronBlue->getWeight(0) // 32
 		);
 	fflush(flog);
 }

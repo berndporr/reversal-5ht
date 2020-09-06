@@ -13,6 +13,7 @@ b = len(data[:,0])
 pl.subplot(911);
 pl.plot(data[a:b,0],data[a:b,26]);
 pl.plot(data[a:b,0],data[a:b,6]);
+pl.plot(data[a:b,0],data[a:b,7]);
 pl.ylabel('visR*2/PF');
 #
 pl.subplot(912);
@@ -20,16 +21,17 @@ pl.plot(data[a:b,0],data[a:b,30]);
 pl.ylabel('w OFC');
 #
 pl.subplot(913);
+pl.plot(data[a:b,0],data[a:b,31]);
+pl.plot(data[a:b,0],data[a:b,32]);
+pl.ylabel('mPFC w G/B');
+#
+pl.subplot(914);
 pl.plot(data[a:b,0],data[a:b,9]);
 pl.ylabel('mPFC G');
 #
-pl.subplot(914);
-pl.plot(data[a:b,0],data[a:b,8]);
-pl.ylabel('core w G');
-#
 pl.subplot(915);
-pl.plot(data[a:b,0],data[a:b,12]);
-pl.ylabel('core G out');
+pl.plot(data[a:b,0],data[a:b,10]);
+pl.ylabel('mPFC B');
 #
 pl.subplot(916);
 pl.plot(data[a:b,0],data[a:b,14]);

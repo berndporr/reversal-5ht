@@ -73,6 +73,8 @@ class Robot {
  public:
 	void setPhi(float phiTmp) {phi=phiTmp;};
 
+	float getPhi() {return phi;}
+
  protected:
 	/**
 	 * last dPhi

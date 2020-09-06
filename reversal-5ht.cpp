@@ -254,6 +254,8 @@ void LimbicMainWindow::doSimStep() {
 
 			robot[0]->xCoord = 50;
 			robot[0]->yCoord = world->maxy/2 + rand()%(maxy/3)-maxy/6;
+			float a = robot[0]->getPhi() - (float)random() / (float)RAND_MAX / 2;
+			robot[0]->setPhi(a);
 			
 			int cx1 = PLACE_X1;
 			int cy1 = PLACE_Y1;

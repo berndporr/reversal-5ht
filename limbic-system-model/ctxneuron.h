@@ -22,6 +22,10 @@ public:
 		return weights[i];
 	}
 
+	void setWeight(int i, float w) {
+		weights[i] = w;
+	}
+
 private:
 	float output;
 	float output2;

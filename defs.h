@@ -160,7 +160,7 @@
 #define FOOD_DIAMETER 20
 
 // what the robot can see
-#define EYES_VIEWING_ANGLE M_PI/2
+#define EYES_VIEWING_ANGLE M_PI/4
 
 /**
  * Number of FOOD bits
@@ -218,7 +218,7 @@
 // Reversal learning
 
 // defines how many successful contacts we need before reversal learning
-#define THRES_FOOD_CONTACTS 5
+#define THRES_FOOD_CONTACTS 10
 
 #endif
 

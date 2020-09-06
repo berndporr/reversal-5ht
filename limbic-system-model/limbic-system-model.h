@@ -72,10 +72,10 @@ private:
 	
 	// I see the light green object and I approach the light
 	// green one
-	float core_weight_lg2lg = 0.2;
+	float core_weight_lg2lg = 1;
 
 	// I see the dark green object and I approach the dark green one
-	float core_weight_dg2dg = 0.2;
+	float core_weight_dg2dg = 1;
 
 private:
 	// motor activities
@@ -86,7 +86,7 @@ private:
 
 public:
 	// learning rate of the core
-	const float learning_rate_core = 0.1;
+	const float learning_rate_core = 0;
 
 	float core_DA = 0;
 	float core_plasticity = 0;
@@ -122,7 +122,7 @@ public:
 
 	///////////////////////////////////////////////////////////////
 	// mPFC
-	const float learning_rate_mPFC = 0.1;
+	const float learning_rate_mPFC = 5;
 	
 	SecondOrderLowpassFilter* visual_direction_Green_mPFC_filter;
 	SecondOrderLowpassFilter* visual_direction_Blue_mPFC_filter;
