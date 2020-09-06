@@ -242,7 +242,8 @@ void Limbic_system::doStep(float _reward,
 
 
 void Limbic_system::logging() {
-	fprintf(flog,"%ld %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f\n",
+	fprintf(flog,"%ld %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f "
+		"%f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f %f\n",
 		step, //0
 		reward, //1
 		placefieldGreen, //2
@@ -274,8 +275,9 @@ void Limbic_system::logging() {
 		OFC, // 28
 		serotoninConcentration, // 29
 		OFCNeuron->getWeight(0), // 30
-		mPFCneuronGreen->getWeight(0), // 31
-		mPFCneuronBlue->getWeight(0) // 32
+		OFCNeuron->getWeight(1), // 31
+		mPFCneuronGreen->getWeight(0), // 32
+		mPFCneuronBlue->getWeight(0) // 33
 		);
 	fflush(flog);
 }

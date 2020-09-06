@@ -18,11 +18,12 @@ pl.ylabel('visR*2/PF');
 #
 pl.subplot(912);
 pl.plot(data[a:b,0],data[a:b,30]);
-pl.ylabel('w OFC');
+pl.plot(data[a:b,0],data[a:b,31]);
+pl.ylabel('w OFC G/B');
 #
 pl.subplot(913);
-pl.plot(data[a:b,0],data[a:b,31]);
 pl.plot(data[a:b,0],data[a:b,32]);
+pl.plot(data[a:b,0],data[a:b,33]);
 pl.ylabel('mPFC w G/B');
 #
 pl.subplot(914);
