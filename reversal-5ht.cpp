@@ -19,7 +19,7 @@
 /***********************************************
  * GNU GENERAL PUBLIC LICENSE
  * Version 3
- * (C) 2017-2019, Bernd Porr, bernd.porr@glasgow.ac.uk
+ * (C) 2017-2020, Bernd Porr, bernd.porr@glasgow.ac.uk
  ***********************************************/
 
 /**
@@ -35,7 +35,7 @@ int MAXFOODCONTACTS = 50;
 /**
  * Path to the results
  **/
-const char prefix[]="results_patience_for_reward";
+const char prefix[]="results";
 
 #define BORDERS 1
 
@@ -62,40 +62,19 @@ const char* setParameters(int scenario) {
 		fprintf(stderr,"Normal condition");
 		return "normal";
 	case 1:
-		fprintf(stderr,"Reward shows up earlier");
-		REWARD_DELAY = 100;
-		return "normal_less_wait";
-	case 2:
 		fprintf(stderr,"DRN is suppressed");
 		DRN_SUPPRESSION = 4;
 		return "drn_suppress";
-	case 3:
-		fprintf(stderr,"DRN is suppressed and less wait");
-		DRN_SUPPRESSION = 4;
-		REWARD_DELAY = 100;
-		return "drn_suppress_less_wait";
-	case 4:
+	case 2:
 		fprintf(stderr,"DRN is suppressed and SSRI");
 		DRN_SUPPRESSION = 4;
 		DRN_OFFSET = 0.15;
 		return "drn_suppress_ssri";
-	case 5:
-		fprintf(stderr,"DRN is suppressed, SSRI and less wait");
-		DRN_SUPPRESSION = 4;
-		DRN_OFFSET = 0.15;
-		REWARD_DELAY = 100;
-		return "drn_suppress_ssri_less_wait";
-	case 6:
+	case 3:
 		fprintf(stderr,"DRN is suppressed and 5HTR2 up");
-		DRN_SUPPRESSION = 4;
+		// DRN_SUPPRESSION = 4;
 		OFC_5HTR2_OFFSET = 0.5;
 		return "drn_suppress_5ht2up";
-	case 7:
-		fprintf(stderr,"DRN is suppressed, 5HTR2 up and less wait");
-		DRN_SUPPRESSION = 4;
-		OFC_5HTR2_OFFSET = 0.5;
-		REWARD_DELAY = 100;
-		return "drn_suppress_5ht2up_less_wait";
 	}
 	return "";
 }
