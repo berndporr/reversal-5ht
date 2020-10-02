@@ -50,7 +50,8 @@ private:
 		if (w<0) w = 0;
 	}
 
-	float ofc5HTreceptors(float x, float htR1, float htR2) {
+public:
+	static float ofc5HTreceptors(float x, float htR1, float htR2) {
 		htR1 = 1 + htR1;
 		htR2 = 2 + htR2;
 		float r = (1-exp(-pow(x/htR1,htR1)))*htR2;
