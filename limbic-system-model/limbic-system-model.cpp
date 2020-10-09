@@ -34,7 +34,7 @@ Limbic_system::Limbic_system()
 
 	DRNto5HTrelease = new SecondOrderLowpassFilter(0.001);
 
-	OFCNeuron = new CtxNeuron(learning_rate_OFC,learning_rate_OFC * 0.5);
+	OFCNeuron = new CtxNeuron(learning_rate_OFC,learning_rate_OFC * 0.1);
 	// OFCNeuron->addInput(placefieldGreen);
 	// OFCNeuron->addInput(placefieldBlue);
 	OFCNeuron->addInput(visual_direction_Green_trace);
@@ -118,7 +118,7 @@ void Limbic_system::doStep(float _reward,
 	// reward experienced in the past.
 	// It codes reward value and the primary reward also has a
 	// value.
-	OFC = OFCNeuron->doStep(reward, serotoninConcentration * 2);
+	OFC = OFCNeuron->doStep(reward, serotoninConcentration+0.1);
 	if (OFC > 0.25) {
 		OFC = 0.25;
 	}

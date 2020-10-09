@@ -176,7 +176,7 @@ public:
 	float OFC = 0;
 
 	// learning rate for the OFC, just now from HC to OFC
-	const float learning_rate_OFC = 0.5;
+	const float learning_rate_OFC = 1;
 
 	// weights from the hippocampus place fields to the OFC
 	float pfLg2OFC = 0;
