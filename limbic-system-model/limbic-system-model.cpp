@@ -118,7 +118,7 @@ void Limbic_system::doStep(float _reward,
 	// reward experienced in the past.
 	// It codes reward value and the primary reward also has a
 	// value.
-	OFC = OFCNeuron->doStep(reward, DRN * 2);
+	OFC = OFCNeuron->doStep(reward, serotoninConcentration * 2);
 	if (OFC > 0.25) {
 		OFC = 0.25;
 	}
