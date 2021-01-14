@@ -94,8 +94,6 @@ LimbicMainWindow::LimbicMainWindow( QWidget *parent,
 	stepsBelow=0;
 	fX0=NULL;
 	foodDelay=FOOD_DELAY;
-	numOfFoodContactsDuringReversal=0;
-	numOfFoodContactsFromReversal=0;
 	isReversal=0;
 
 	// Creates the world
@@ -250,28 +248,18 @@ void LimbicMainWindow::doSimStep() {
 			// get info if that has been eaten
 			int reward_exists=world->getFoodValid(r);
 			if (!(world->getSwapFlag())) {
-				// real food is on the left
 				if (isReversal) {
-					fprintf(stderr,"Final reversal contacts: %d\n",
-						numOfFoodContactsDuringReversal);
+					// 2nd reversal and we are not interested in that! Let's quit.
+					close();
 				}
 			} else {
 				// real food is on the right (reversal)
 				if (!isReversal) {
 					// first step
 					isReversal=1;
-					numOfFoodContactsFromReversal=
-						world->getNumberOfFoodContacts();
 					fprintf(stderr,"########### REVERSAL STARTED ###########\n");
 				}
-				numOfFoodContactsDuringReversal=
-					world->getNumberOfFoodContacts()-
-					numOfFoodContactsFromReversal;
-				fprintf(stderr,"Reversal contacts so far: %d\n",
-					numOfFoodContactsDuringReversal);
 			}
-
-
 			    
 			if (reward_exists) {
 				// reward is still out there
@@ -333,9 +321,6 @@ void LimbicMainWindow::doSimStep() {
 	
         actualStep++;
 	if (actualStep==MAXSTEP) {
-		close();
-	}
-	if (robot[0]->nEaten >= MAXFOODCONTACTS) {
 		close();
 	}
 }

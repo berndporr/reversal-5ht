@@ -19,6 +19,7 @@ float CtxNeuron::doStep(float nonPlasticInput, float serot) {
 	if (output < 0) output = 0;
 	if (output > 1) output = 1;
 	if (serot < 0) serot = 0;
+	if (serot > 1) serot = 1;
 	output = ofc5HTreceptors(output,serot,serot*2);
 		
 	float dOutput = output - output2;
