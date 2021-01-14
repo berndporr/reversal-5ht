@@ -33,7 +33,7 @@ float CtxNeuron::doStep(float nonPlasticInput, float serot) {
 		if (nonPlasticInput > 0.25)
 			weightChange(weights[i], learningRateLTP * serot * *(inputs[i]) * dOutput);
 		// weight change: LTD
-		weightChange(weights[i], - tLTD * learningRateLTD * slowCa);
+		weightChange(weights[i], - tLTD * learningRateLTD * slowCa * serot);
 	}
 
 	output2 = output;

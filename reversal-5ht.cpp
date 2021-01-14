@@ -63,11 +63,11 @@ const char* setParameters(int scenario) {
 		return "normal";
 	case 1:
 		fprintf(stderr,"DRN is suppressed");
-		DRN_SUPPRESSION = 4;
+		DRN_SUPPRESSION = 10;
 		return "drn_suppress";
 	case 2:
 		fprintf(stderr,"DRN is suppressed and SSRI");
-		DRN_SUPPRESSION = 4;
+		DRN_SUPPRESSION = 10;
 		DRN_OFFSET = 0.15;
 		return "drn_suppress_ssri";
 	case 3:
@@ -360,8 +360,7 @@ void statistics_food_run(int argc, char **argv) {
 	LimbicMainWindow* limbicbots=NULL;
 	a=new QApplication( argc, argv ); // create application object
 
-	// loop through different learning rates.
-       	for(float phi=0.0001;phi<2*M_PI;phi=phi+0.1) {
+       	for(float phi=0.0001;phi<2*M_PI;phi=phi+0.2) {
 		fprintf(stderr,"phi=%e\n",phi);
 		limbicbots=new LimbicMainWindow();
 		if (!limbicbots) {
