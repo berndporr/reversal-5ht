@@ -126,17 +126,14 @@ void Limbic_system::doStep(float _reward,
 		OFC = 0.25;
 	}
 	
-	// LH
-	LH = OFC;
-
 	// DRN
 	// the dorsal raphe activity is driven by the OFC in a positive way
-	DRN = (LH + OFC * 4) / (1+RMTg * shunting_inhibition_factor + DRN_SUPPRESSION) + DRN_OFFSET;
+	DRN = (OFC * 5) / (1+RMTg * shunting_inhibition_factor + DRN_SUPPRESSION) + DRN_OFFSET;
 
 	serotoninConcentration = DRNto5HTrelease->filter(DRN);
 
 	// the VTA gets its activity from the LH and is ihibited by the RMTg
-	VTA = (LH + VTA_baseline_activity) / (1+(RMTg + VTA_forwardinhibition->filter(OFC*0.1)) * shunting_inhibition_factor);
+	VTA = (OFC + VTA_baseline_activity) / (1+(RMTg + VTA_forwardinhibition->filter(OFC*0.1)) * shunting_inhibition_factor);
 
 	// this is also generated in the mPFC and then fed down to the NAcc core with the command
 	// to explore
