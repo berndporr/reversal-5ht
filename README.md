@@ -1,5 +1,3 @@
-# Reversal learning without dopamine but serotonin
-
 ![alt tag](bna/results_v4.png)
 
 ## Behaviour based simulator
