@@ -1,22 +1,3 @@
-# An investigation into serotonergic and environmental interventions against depression in a simulated delayed reward paradigm
-
-Bernd Porr, Alex Trew, Alice Miller
-
-![alt tag](screenshot.png)
-
-This simulator has been created to test the action of 5HT on delayed
-reward delivery, how disruption changes the obtained reward and
-how this possibly can be fixed with the help of SSRIs or psychedelics.
-
-## Experiment
-
-The experiment simulates patience for reward where the agent needs to wait in front
-of the landmark. The rewards appears after 150 (100) time steps. If the agent approaches
-the landmark too early it's placed back to the start position.
-
-We investigate how a lack of serotonin (because of a DRN suppression) can be compensated
-by SSRI, psychedelics and environmental changes.
-
 ## Behaviour based simulator
 
 ### Stimuli
@@ -68,25 +49,3 @@ Possible scenarios:
 Do run stats of all scenarios type:
 ```run_all_stats.sh``` and then plot the results with
 ```normalised_reward.py```.
-
-## Model checking
-
-### Installation
-
-Install PRISM: http://www.prismmodelchecker.org/manual/InstallingPRISM/Instructions
-
-Either install the binaries or compile from source by following the instructions above.
-When compiling from source you can add to the Makefile: `OPTIMISE = -O3 -march=native`.
-Compile as instructed. Then type: `/usr/local/src/prism-4.4/prism/bin# cp * /usr/local/bin`.
-
-### Running all simulations
-
-Change to `prism_model` and run the script `run_models.sh`. This will then run all
-eight scenarios as described above. To plot the reward probabilites type:
-`plot_results.py`.
-
-
-
-
-
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2589095.svg)](https://doi.org/10.5281/zenodo.2589095)
