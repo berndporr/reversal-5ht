@@ -13,15 +13,16 @@
 ### Motor output
  * Two signals to either approach the dark green landmark or the bright one
 
-### Requires
- * QT5
-
 ### Compile under Linux
- * Install the other packages: "apt-get install qt5-qmake, g++, qtbase5-dev-tools, qtdeclarative5-dev-tools, qtbase5-dev, qt5-default"
- * qmake
- * make
+ * Install these packages by typing in the commandline: `sudo apt-get install qt5-qmake g++ qtbase5-dev-tools qtdeclarative5-dev-tools qtbase5-dev qt5-default`
+ * Clone it from this reposity with `git clone <git URL from the top of this page>`.
+ * `cd reversal-5ht`
+ * `qmake`
+ * `make`
 
 ### How to run?
+
+Just type `./patience-5ht` for the default settings.
 
 There are two different modes: single run (-a) and statistical run (-b).
 
