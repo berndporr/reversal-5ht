@@ -14,7 +14,7 @@
  * Two signals to either approach the dark green landmark or the bright one
 
 ### Compile under Linux
- * Install these packages by typing in the commandline: `sudo apt-get install qt5-qmake g++ qtbase5-dev-tools qtdeclarative5-dev-tools qtbase5-dev qt5-default`
+ * Install these packages by typing in the commandline: `sudo apt-get install qt5-qmake g++ qtbase5-dev-tools qtdeclarative5-dev-tools qtbase5-dev qt5-default libquicktime-dev`
  * Clone it from this reposity with `git clone <git URL from the top of this page>`.
  * `cd reversal-5ht`
  * `qmake`
