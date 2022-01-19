@@ -1,5 +1,6 @@
-cmake_minimum_required(VERSION 2.8.9)
+cmake_minimum_required(VERSION 3.1.0)
 include(GNUInstallDirs)
 project (test_ofc5HTreceptors)
 add_executable(test_ofc5HTreceptors test_ofc5HTreceptors.cpp ctxneuron.cpp filter.cpp)
+add_executable(test-ctx-Neuron test-ctx-neuron.cpp ctxneuron.cpp filter.cpp)
 set (CMAKE_CXX_STANDARD 11)
