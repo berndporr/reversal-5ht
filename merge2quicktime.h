@@ -1,8 +1,8 @@
 #ifndef _MERGE2QUICKTIME
 #define _MERGE2QUICKTIME
 
-#include<quicktime.h>
-#include<colormodels.h>
+#include<lqt/quicktime.h>
+#include<lqt/colormodels.h>
 #include<string.h>
 #include<stdio.h>
 #include<math.h>
