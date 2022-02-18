@@ -5,7 +5,7 @@
 
 #include <filter.h>
 
-#include "limbic-system-model/ctxneuron.h"
+#include "ctxneuron.h"
 
 extern float LHB_BIAS;
 extern float DRN_SUPPRESSION;

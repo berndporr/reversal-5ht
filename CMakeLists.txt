@@ -29,9 +29,6 @@ add_executable(reversal-5ht
   reversal-5ht.cpp
   worldpoint.cpp
   direction.cpp
-  limbic-system-model/filter.cpp
-  limbic-system-model/limbic-system-model.cpp
-  limbic-system-model/ctxneuron.cpp
 )
 
-target_link_libraries(reversal-5ht Qt5::Widgets Qt5::Core quicktime ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(reversal-5ht Qt5::Widgets Qt5::Core quicktime ${CMAKE_THREAD_LIBS_INIT} limbic-system-lib)
