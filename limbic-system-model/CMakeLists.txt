@@ -1,4 +1,7 @@
 cmake_minimum_required(VERSION 3.1.0)
+set(CMAKE_AUTOMOC OFF)
+set(CMAKE_AUTORCC OFF)
+set(CMAKE_AUTOUIC OFF)
 include(GNUInstallDirs)
 project (test_ofc5HTreceptors)
 add_executable(test_ofc5HTreceptors test_ofc5HTreceptors.cpp ctxneuron.cpp filter.cpp)
