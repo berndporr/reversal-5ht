@@ -7,7 +7,7 @@
 // Based on Sjostrom (sjostrom_2002_plast_ca_ltp_ltd.pdf) and
 // Ciranna (ciranna_2006_5ht_glu_receptors_review.pdf): Ca based conincidence detector
 // Dayan / Iigaya 2018: 5HT controls plasticity, learning rate increased
-// Nutt: 5HTR2 "Flexibilit of the mind" / plastcicity
+// Nutt: 5HTR2 "Flexibility of the mind" / plastcicity
 // Kraus 2017: 5HTR2 predominantly in the PFC
 
 class CtxNeuron {
